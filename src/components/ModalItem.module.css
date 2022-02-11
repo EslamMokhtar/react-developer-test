@@ -1,0 +1,66 @@
+.profile {
+  border-radius: 8px;
+  width: 70%;
+  object-fit: cover;
+}
+.leftItems {
+  padding-left: 0px;
+  flex-direction: column;
+  display: flex;
+  font-weight: lighter;
+  list-style-type: none;
+  justify-content: space-between;
+}
+.column {
+  float: left;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  margin: auto;
+}
+
+.cartItem {
+  width: 100%;
+  height: 130px;
+  margin-bottom: 40px;
+}
+.addButtons button:hover {
+  transition: 0.5s ease;
+  background-color: black;
+  color: white;
+}
+.sizeButtons {
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  float: left;
+}
+
+.addButtons button {
+  text-decoration: none;
+  text-align: center;
+  background-color: white;
+  color: black;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 5px;
+  border: 2px solid black;
+  margin-right: 9px;
+  cursor: pointer;
+}
+.sizeButtons button {
+  width: auto;
+  padding: 5px;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  text-transform: uppercase;
+}
+.addButtons {
+  display: flex;
+  width: 30%;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: space-between;
+}

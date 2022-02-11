@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { Component } from "react/cjs/react.production.min";
+import { Switch, Route, Redirect } from "react-router-dom";
+import Home from "./pages/Home";
+import Cart from "./pages/Cart";
+import Product from "./pages/Product";
+import Category from "./pages/Category";
+import Navbar from "./shared/Navbar";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+      <>
+        <Navbar />
+        <Switch>
+          <Route path="/" exact>
+            <Redirect to="all" />
+          </Route>
+          <Route path="/all" exact>
+            <Home />
+          </Route>
+          <Route path="/cart">
+            <Cart />
+          </Route>
+          <Route
+            path="/:cid/products/:pid"
+            render={({ match }) => <Product pid={match.params.pid} />}
+          />
+          <Route
+            exact
+            path="/:cid"
+            render={({ match }) => <Category cid={match.params.cid} />}
+          />
+        </Switch>
+      </>
+    );
+  }
 }
 
 export default App;

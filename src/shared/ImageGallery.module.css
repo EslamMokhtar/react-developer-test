@@ -1,0 +1,30 @@
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 10px;
+  margin-top: -22px;
+  border: none;
+  font-weight: bold;
+  font-size: 10px;
+  transition: 1s ease;
+  border-radius: 0 3px 3px 0;
+}
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.prev:hover,
+.next:hover {
+  border-radius: 5px;
+  background-color: #5ece7b;
+}
+.mySlides {
+  display: none;
+}
+.buttons {
+  display: flex;
+}
