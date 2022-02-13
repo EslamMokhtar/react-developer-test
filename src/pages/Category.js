@@ -6,11 +6,12 @@ import axios from "axios";
 import Loader from "../shared/Loader";
 
 class Category extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.isMounted = false;
     this.state = {
       products: null,
+      currentCategory: this.props.cid,
     };
   }
   fetchData() {
@@ -70,8 +71,10 @@ class Category extends Component {
   componentWillUnmount() {
     this.isMounted = false;
   }
-  componentDidUpdate() {
-    this.fetchData();
+  componentDidUpdate(pre) {
+    if (pre.cid !== this.props.cid) {
+      this.fetchData();
+    }
   }
   render() {
     if (!this.state.products) {
@@ -89,7 +92,7 @@ class Category extends Component {
           return (
             <Card
               key={product.id}
-              category="all"
+              category={this.props.cid}
               price={matchCurrency.amount}
               symbol={matchCurrency.currency.symbol}
               product={product}
