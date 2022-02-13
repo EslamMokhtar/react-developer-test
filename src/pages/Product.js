@@ -176,12 +176,16 @@ class Product extends Component {
                   ) {
                     return this.setState({ showError: true });
                   }
+                  this.setState({ attribute: null });
                   return this.props.dispatch(
                     cartActions.addProduct({
                       ...this.state.product,
                       quantity: 1,
                       attribute: this.state.attribute,
-                      attributeName: this.state.product.attributes[0].name,
+                      attributeName:
+                        this.state.product.attributes.length > 0
+                          ? this.state.product.attributes[0].name
+                          : null,
                     })
                   );
                 }}

@@ -9,7 +9,15 @@
   height: 200px;
   border-radius: 10px;
 }
-
+.attributeButton button {
+  width: auto;
+  padding: 5px;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  text-transform: uppercase;
+}
 .fade {
   -webkit-animation-name: fade;
   -webkit-animation-duration: 3s;
@@ -29,6 +37,7 @@
 .leftColumn {
   display: grid;
   font-size: 25px;
+  align-content: space-between;
 }
 
 .addButtons button {

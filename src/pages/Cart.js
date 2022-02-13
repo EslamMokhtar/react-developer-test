@@ -19,6 +19,7 @@ class Cart extends Component {
         </div>
       );
     }
+    const items=[...this.props.items].reverse()
     const total = this.props.items.map((item) => {
       const quantity = item.quantity;
       const foundedAmount = item.prices.find(
@@ -33,7 +34,7 @@ class Cart extends Component {
       <div className={classes.container}>
         <h1 className={classes.title}>Cart</h1>
         <div className={classes.cards}>
-          {this.props.items.map((item) => {
+          {items.map((item) => {
             const matchCurrency = item.prices.find(
               (price) => price.currency.label === this.props.currency.label
             );

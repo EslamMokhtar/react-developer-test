@@ -29,12 +29,7 @@
   background-color: black;
   color: white;
 }
-.sizeButtons {
-  display: flex;
-  align-items: center;
-  text-transform: uppercase;
-  float: left;
-}
+
 
 .addButtons button {
   text-decoration: none;
@@ -48,7 +43,7 @@
   margin-right: 9px;
   cursor: pointer;
 }
-.sizeButtons button {
+.attributeButton button {
   width: auto;
   padding: 5px;
   border: 2px solid black;

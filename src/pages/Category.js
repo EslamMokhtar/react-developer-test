@@ -88,14 +88,10 @@ class Category extends Component {
           return (
             <Card
               key={product.id}
-              attributes={product.attributes}
-              category={this.state.products.category.name}
-              id={product.id}
-              images={product.gallery}
-              inStock={product.inStock}
+              category="all"
               price={matchCurrency.amount}
               symbol={matchCurrency.currency.symbol}
-              name={product.name}
+              product={product}
             />
           );
         })}

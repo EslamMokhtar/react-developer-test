@@ -21,10 +21,14 @@ class ModalItem extends Component {
               {(this.props.price * this.props.quantity).toFixed(2)}
             </strong>
 
-            <div className={classes.sizeButtons}>
-              <h5 style={{paddingRight:'5px'}}>{this.props.attributeName}</h5>
-              <button>{this.props.attribute}</button>
-            </div>
+            {this.props.attributeName && (
+              <div className={classes.attributeButton}>
+                <h5 style={{ paddingRight: "5px" }}>
+                  {this.props.attributeName}
+                </h5>
+                <button>{this.props.attribute}</button>
+              </div>
+            )}
           </div>
         </div>
         <div className={classes.column}>

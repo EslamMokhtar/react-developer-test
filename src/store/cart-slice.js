@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-const initialState = { items: [], total: 0 };
+const initialState = { items: JSON.parse(localStorage.getItem("items")) || [] };
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -15,6 +15,7 @@ const cartSlice = createSlice({
       } else {
         state.items.push(action.payload);
       }
+      localStorage.setItem("items", JSON.stringify(state.items));
     },
     addQuantity(state, action) {
       const foundItem = state.items.find(
@@ -23,6 +24,7 @@ const cartSlice = createSlice({
           product.attribute === action.payload.attribute
       );
       foundItem.quantity++;
+      localStorage.setItem("items", JSON.stringify(state.items));
     },
     subQuantity(state, action) {
       const foundItem = state.items.find(
@@ -40,6 +42,7 @@ const cartSlice = createSlice({
           );
         });
       }
+      localStorage.setItem("items", JSON.stringify(state.items));
     },
     removeProduct(state, action) {
       const foundItem = state.items.find(
@@ -53,6 +56,7 @@ const cartSlice = createSlice({
           item.id !== foundItem.id || item.attribute !== foundItem.attribute
         );
       });
+      localStorage.setItem("items", JSON.stringify(state.items));
     },
   },
 });

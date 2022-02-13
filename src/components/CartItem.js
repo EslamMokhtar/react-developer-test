@@ -19,10 +19,14 @@ class CartItem extends Component {
             {this.props.symbol}
             {(this.props.price * this.props.quantity).toFixed(2)}
           </p>
-          <div className={classes.buttons}>
-            <h5 style={{ paddingRight: "5px" }}>{this.props.attributeName}:</h5>
-            <button>{this.props.attribute}</button>
-          </div>
+          {this.props.attributeName && (
+            <div className={classes.attributeButton}>
+              <h5 style={{ paddingRight: "5px" }}>
+                {this.props.attributeName}
+              </h5>
+              <button>{this.props.attribute}</button>
+            </div>
+          )}
         </div>
 
         <div className={classes.rightColumn}>

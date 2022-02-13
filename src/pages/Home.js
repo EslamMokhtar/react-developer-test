@@ -79,13 +79,9 @@ class Items extends Component {
             <Card
               key={product.id}
               category="all"
-              attributes={product.attributes}
-              id={product.id}
-              images={product.gallery}
-              inStock={product.inStock}
               price={matchCurrency.amount}
               symbol={matchCurrency.currency.symbol}
-              name={product.name}
+              product={product}
             />
           );
         })}

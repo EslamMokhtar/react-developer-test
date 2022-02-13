@@ -28,6 +28,7 @@ class Modal extends Component {
         </div>
       );
     }
+    const items=[...this.props.items].reverse()
     const total = this.props.items.map((item) => {
       const quantity = item.quantity;
       const foundedAmount = item.prices.find(
@@ -51,7 +52,7 @@ class Modal extends Component {
             {totalQuantity} {totalQuantity < 2 ? "item" : "items"}
           </p>
           <div className={classes.modalItems}>
-            {this.props.items.map((item) => {
+            {items.map((item) => {
               const matchCurrency = item.prices.find(
                 (price) => price.currency.label === this.props.currency.label
               );
