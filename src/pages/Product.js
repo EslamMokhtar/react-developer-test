@@ -141,7 +141,7 @@ class Product extends Component {
                       className={`${classes.buttonGroup} ${
                         this.state.attribute === item.displayValue &&
                         classes.selected
-                      }
+                      } ${this.state.showError && classes.error}
                        
                       `}
                       onClick={() =>
@@ -174,7 +174,11 @@ class Product extends Component {
                     !this.state.attribute &&
                     this.state.product.attributes.length > 0
                   ) {
-                    return this.setState({ showError: true });
+                    this.setState({ showError: true });
+                    return setTimeout(
+                      () => this.setState({ showError: false }),
+                      1000
+                    );
                   }
                   this.setState({ attribute: null });
                   return this.props.dispatch(
@@ -195,11 +199,7 @@ class Product extends Component {
             ) : (
               <h2>Out Of Stock</h2>
             )}
-            {this.state.showError && (
-              <p style={{ color: "red", margin: "5px 0" }}>
-                Please Choose a {this.state.product.attributes[0].name}!
-              </p>
-            )}
+         
           </div>
           <div className={classes.description}>
             {parse(this.state.product.description)}

@@ -2,12 +2,13 @@
   float: left;
   width: 33.33%;
   display: flex;
-  height: 565px;
+  height: 550px;
   justify-content: space-around;
   padding: 40px;
 }
 
 .card {
+  max-width: 100%;
   text-align: center;
   background-color: #fff;
   border-radius: 10px;
@@ -68,7 +69,7 @@
   color: white;
   width: 50px;
   height: 50px;
-  bottom: -40px;
+  bottom: -76px;
   right: 0;
   border: none;
   border-radius: 50%;
@@ -85,11 +86,11 @@
 .buttonGroup {
   margin-right: 5px;
   margin-top: 10px;
-  transition: 0.5s ease;
+  transition: 0.4s ease;
   background-color: white;
   border-radius: 15px;
   text-transform: uppercase;
-  font-size:10.5px;
+  font-size: 10.5px;
   cursor: pointer;
   padding: 5px;
   text-decoration: none;
@@ -100,6 +101,13 @@
   background-color: black;
   color: white;
 }
+.buttonGroup.error {
+  border-color: red;
+  background-color: red;
+  color: white;
+  animation: 1s ease-out 0s 1 shake;
+}
+
 @media only screen and (max-width: 1100px) {
   .column {
     width: 50%;
@@ -122,5 +130,40 @@
   }
   100% {
     transform: translateX(0);
+  }
+}
+@keyframes shake {
+  0% {
+    transform: translate(1px);
+  }
+  10% {
+    transform: translate(-1px);
+  }
+  20% {
+    transform: translate(1px);
+  }
+  30% {
+    transform: translate(-1px);
+  }
+  40% {
+    transform: translate(1px);
+  }
+  50% {
+    transform: translate(-1px);
+  }
+  60% {
+    transform: translate(1px);
+  }
+  70% {
+    transform: translate(-1px);
+  }
+  80% {
+    transform: translate(1px);
+  }
+  90% {
+    transform: translate(-1px);
+  }
+  100% {
+    transform: translate(1px);
   }
 }

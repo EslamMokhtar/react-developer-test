@@ -15,6 +15,7 @@ const GET_PRODUCTS = {
         name
         gallery
         inStock
+        brand
         attributes{
           name
           type

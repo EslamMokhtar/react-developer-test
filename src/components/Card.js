@@ -29,14 +29,24 @@ class Card extends Component {
                 </Link>
               ) : (
                 <>
+                  <ImageGallery
+                    images={gallery}
+                    haveLink={1}
+                    name
+                    id={id}
+                    category={this.props.category}
+                  />
                   <button
                     className={classes.addButton}
                     onClick={() => {
                       if (!this.state.attribute && attributes.length > 0) {
-                        return this.setState({ showError: true });
+                        this.setState({ showError: true });
+                        return setTimeout(
+                          () => this.setState({ showError: false }),
+                          1000
+                        );
                       }
-                      this.setState({ attribute: null });
-                      return this.props.dispatch(
+                      this.props.dispatch(
                         cartActions.addProduct({
                           ...this.props.product,
                           quantity: 1,
@@ -45,17 +55,12 @@ class Card extends Component {
                             attributes.length > 0 ? attributes[0].name : null,
                         })
                       );
+
+                      return this.setState({ attribute: null });
                     }}
                   >
                     <FontAwesomeIcon icon={faCartPlus} size="lg" />
                   </button>
-                  <ImageGallery
-                    images={gallery}
-                    haveLink={1}
-                    name
-                    id={id}
-                    category={this.props.category}
-                  />
                 </>
               )}
             </div>
@@ -65,6 +70,7 @@ class Card extends Component {
                 textAlign: "left",
                 marginLeft: "20px",
                 marginTop: "20px",
+                width:'75%',
                 fontWeight: "lighter",
               }}
             >
@@ -81,6 +87,7 @@ class Card extends Component {
               {this.props.symbol}
               {this.props.price}
             </h4>
+
             {attributes.length > 0 &&
               attributes[0].items.map((item) => {
                 if (attributes[0].type === "swatch") {
@@ -97,7 +104,7 @@ class Card extends Component {
                     className={`${classes.buttonGroup} ${
                       this.state.attribute === item.displayValue &&
                       classes.selected
-                    }
+                    } ${this.state.showError && classes.error}
                        
                       `}
                     onClick={() =>
@@ -112,11 +119,6 @@ class Card extends Component {
                   </button>
                 );
               })}
-            {this.state.showError && (
-              <p style={{ color: "red", margin: "5px 0" }}>
-                Please Choose a {attributes[0].name}!
-              </p>
-            )}
           </div>
         </div>
       </div>

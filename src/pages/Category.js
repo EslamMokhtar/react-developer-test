@@ -25,6 +25,7 @@ class Category extends Component {
               name
               inStock
               gallery
+              brand
               attributes{
                 name
                 type
