@@ -41,10 +41,10 @@ class ImageGallery extends Component {
             >
               {this.props.haveLink ? (
                 <Link to={`/${this.props.category}/products/${this.props.id}`}>
-                  <img src={item} alt="pic" />
+                  <img src={item} alt={this.props.id} />
                 </Link>
               ) : (
-                <img src={item} alt="pic" />
+                <img src={item} alt={this.props.id} />
               )}
             </div>
           );

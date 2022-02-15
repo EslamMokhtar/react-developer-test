@@ -32,12 +32,12 @@ class Card extends Component {
                   <ImageGallery
                     images={gallery}
                     haveLink={1}
-                    name
                     id={id}
                     category={this.props.category}
                   />
                   <button
                     className={classes.addButton}
+                    data-testid={id}
                     onClick={() => {
                       if (!this.state.attribute && attributes.length > 0) {
                         this.setState({ showError: true });
@@ -70,7 +70,7 @@ class Card extends Component {
                 textAlign: "left",
                 marginLeft: "20px",
                 marginTop: "20px",
-                width:'75%',
+                width: "75%",
                 fontWeight: "lighter",
               }}
             >

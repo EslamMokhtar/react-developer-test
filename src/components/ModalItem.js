@@ -6,6 +6,11 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class ModalItem extends Component {
+  constructor() {
+    super();
+    this.state = { slide: "" };
+  }
+
   render() {
     return (
       <div className={classes.cartItem}>
@@ -34,27 +39,37 @@ class ModalItem extends Component {
         <div className={classes.column}>
           <div className={classes.addButtons}>
             <button
-              onClick={() =>
+              onClick={() => {
+                this.setState({ slide: classes.slideUp });
                 this.props.dispatch(
                   cartActions.addQuantity({
                     id: this.props.id,
                     attribute: this.props.attribute,
                   })
-                )
-              }
+                );
+                return setTimeout(() => this.setState({ slide: "" }), 500);
+              }}
             >
               +
             </button>
-            <p style={{ marginRight: "9px" }}>{this.props.quantity}</p>
+            <div style={{ height: "30px", overflow: "hidden" }}>
+              <p style={{ marginRight: "9px" }} className={this.state.slide}>
+                {this.props.quantity}
+              </p>{" "}
+            </div>
             <button
-              onClick={() =>
+              onClick={() => {
+                this.setState({ slide: classes.slideDown });
                 this.props.dispatch(
                   cartActions.subQuantity({
                     id: this.props.id,
                     attribute: this.props.attribute,
                   })
-                )
-              }
+                );
+                if (this.props.quantity > 1) {
+                  return setTimeout(() => this.setState({ slide: "" }), 500);
+                }
+              }}
             >
               {this.props.quantity > 1 ? (
                 "-"
@@ -72,7 +87,7 @@ class ModalItem extends Component {
             className={classes.profile}
             width="100%"
             src={this.props.image}
-            alt="Pic"
+            alt={this.props.name}
           />
         </div>
       </div>

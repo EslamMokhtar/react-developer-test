@@ -37,7 +37,7 @@
   color: black;
   font-size: 30px;
   text-shadow: 2px 2px 10px white;
-  top: 30%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }

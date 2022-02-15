@@ -160,6 +160,8 @@ class MainNavbar extends Component {
 
               {totalQuantity > 0 && (
                 <span
+                  data-testid="totalQuantity"
+                  id="bagCounter"
                   className={`${classes.badge} ${
                     this.state.animate && classes.animate
                   }`}

@@ -41,7 +41,6 @@
   text-transform: uppercase;
   border-radius: 10px;
   padding: 14px 27px;
-  /* bottom: -440px; */
 }
 .buttonGroup {
   padding: 15px 0;
@@ -91,6 +90,17 @@
   justify-content: center;
   text-align: center;
 }
+
+@media only screen and (max-width: 700px) {
+  .leftColumn {
+    text-align: center;
+  }
+  .card {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+}
+
 @media only screen and (max-width: 550px) {
   .modalContent {
     right: 0;
