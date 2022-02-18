@@ -1,9 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { Provider } from "react-redux";
-import store from "../store/index";
-import Home from "./Home";
-import Navbar from "../shared/Navbar";
+import store from "../../store/index";
+import Home from "../Home";
+import Navbar from "../../shared/Navbar";
 import { BrowserRouter as Router } from "react-router-dom";
 
 describe("Home Component", () => {

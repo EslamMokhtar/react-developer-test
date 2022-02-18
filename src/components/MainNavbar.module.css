@@ -3,7 +3,7 @@
   height: 5rem;
 }
 nav {
-  z-index: 1;
+  z-index: 2;
   background-color: white;
   display: flex;
   align-items: center;
@@ -102,25 +102,35 @@ nav {
   border-radius: 10px;
 }
 .badge {
+  font-family: Roboto;
   position: absolute;
   left: 11px;
   bottom: 10px;
   background-color: black;
   color: #fff;
-  font-weight: bold;
-  font-size: 65%;
+  font-size: 70%;
   border-radius: 10em;
   min-width: 1.8em;
   padding: 0.25em;
   text-align: center;
   transition: all 0.4s;
 }
-.animate{
+.animate {
   transform: scale(1.5);
   background-color: red;
 }
 
-
+.currencyDropdown {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.currencyDropdown h4 {
+  font-weight: normal;
+}
+.chevron h3 {
+  margin-right: 5px;
+}
 @media only screen and (max-width: 550px) {
   nav {
     padding: 0 20px;

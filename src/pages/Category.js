@@ -4,6 +4,7 @@ import classes from "./Home.module.css";
 import Card from "../components/Card";
 import axios from "axios";
 import Loader from "../shared/Loader";
+import GET_CATEGORY from "../utils/graphql/queries/categoryQueries";
 
 class Category extends Component {
   constructor(props) {
@@ -16,45 +17,12 @@ class Category extends Component {
   }
   fetchData() {
     const cid = this.props.cid;
-    const GET_CATEGORY = {
-      query: `
-      {
-          category(input: { title: "${cid}" }) {
-            name
-            products {
-              id
-              name
-              inStock
-              gallery
-              brand
-              attributes{
-                name
-                type
-                id
-                items{
-                  id
-                  displayValue
-                  value
-                }
-              }
-              prices {
-                currency {
-                  label
-                  symbol
-                }
-                amount
-              }
-            }
-          }
-        }
-    
-      `,
-    };
+
     axios({
       url: "http://localhost:4000/",
       method: "POST",
       headers: { "content-type": "application/json" },
-      data: JSON.stringify(GET_CATEGORY),
+      data: JSON.stringify(GET_CATEGORY(cid)),
     })
       .then((response) => {
         if (this.isMounted) {

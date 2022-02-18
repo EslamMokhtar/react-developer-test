@@ -101,7 +101,7 @@ class MainNavbar extends Component {
           </Link>
           <div className={classes.navIcons}>
             <div onClick={this.toggleDropDown} className={classes.chevron}>
-              <h3 style={{ marginRight: "5px" }}>
+              <h3>
                 {this.props.currency.symbol}
               </h3>
               <FontAwesomeIcon
@@ -135,14 +135,10 @@ class MainNavbar extends Component {
                       }
                     >
                       <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-around",
-                        }}
+                     className={classes.currencyDropdown}
                       >
                         <h3>{item.symbol}</h3>
-                        <h4 style={{ fontWeight: "normal" }}>{item.label}</h4>
+                        <h4>{item.label}</h4>
                       </div>
                     </li>
                   );

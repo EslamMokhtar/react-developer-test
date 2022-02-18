@@ -15,11 +15,11 @@ class Cart extends Component {
             style={{ width: "300px", height: "300px" }}
             autoplay
           />
-          <h1 style={{ fontWeight: "normal" }}>Your cart is empty!</h1>
+          <h1>Your cart is empty!</h1>
         </div>
       );
     }
-    const items=[...this.props.items].reverse()
+    const items = [...this.props.items].reverse();
     const total = this.props.items.map((item) => {
       const quantity = item.quantity;
       const foundedAmount = item.prices.find(
@@ -32,25 +32,19 @@ class Cart extends Component {
 
     return (
       <div className={classes.container}>
-        <h1 className={classes.title}>Cart</h1>
+        <h1 className={classes.title}>CART</h1>
         <div className={classes.cards}>
-          {items.map((item) => {
+          {items.map((item, index) => {
             const matchCurrency = item.prices.find(
               (price) => price.currency.label === this.props.currency.label
             );
 
             return (
               <CartItem
-                key={item.attribute}
-                id={item.id}
-                brand={item.brand}
-                name={item.name}
+                key={index}
                 symbol={matchCurrency.currency.symbol}
                 price={matchCurrency.amount}
-                attribute={item.attribute}
-                attributeName={item.attributeName}
-                quantity={item.quantity}
-                images={item.gallery}
+                product={item}
               />
             );
           })}

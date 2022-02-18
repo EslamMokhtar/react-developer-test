@@ -85,12 +85,18 @@
 }
 .empty {
   height: 400px;
-  display:block;
+  display: block;
   align-items: center;
   justify-content: center;
   text-align: center;
 }
-
+.quantity {
+  height: 20px;
+  overflow: hidden;
+}
+.empty h2 {
+  font-weight: normal;
+}
 @media only screen and (max-width: 700px) {
   .leftColumn {
     text-align: center;

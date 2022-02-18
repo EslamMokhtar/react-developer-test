@@ -50,7 +50,7 @@ class ImageGallery extends Component {
           );
         })}
 
-        {this.props.images.length > 1 && (
+        {this.props.images.length > 1 && this.props.hover && (
           <div className={classes.buttons}>
             <button className={classes.prev} onClick={this.preHandler}>
               &#10094;

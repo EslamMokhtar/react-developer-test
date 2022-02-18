@@ -12,26 +12,77 @@ class CartItem extends Component {
     this.state = { slide: "" };
   }
   render() {
-  
+    const {
+      id,
+      brand,
+      name,
+      attributes,
+      selectedAttributes,
+      quantity,
+      gallery,
+    } = this.props.product;
     return (
       <div className={classes.card}>
         <div className={classes.leftColumn}>
           <div>
-            <strong>{this.props.brand}</strong>
-            <p>{this.props.name}</p>
+            <strong>{brand}</strong>
+            <p>{name}</p>
           </div>
-          <p>
+          <strong>
             {this.props.symbol}
-            {(this.props.price * this.props.quantity).toFixed(2)}
-          </p>
-          {this.props.attributeName && (
-            <div className={classes.attributeButton}>
-              <h5 style={{ paddingRight: "5px" }}>
-                {this.props.attributeName}
-              </h5>
-              <button>{this.props.attribute}</button>
-            </div>
-          )}
+            {this.props.price.toFixed(2)}
+          </strong>
+          {selectedAttributes.length > 0 &&
+            attributes.map((attribute) => {
+              if (attribute.type === "swatch") {
+                return (
+                  <div key={attribute.id} className={classes.attributeGroup}>
+                    <p className={classes.attributeName}>{attribute.name}:</p>
+                    {attribute.items.map((item) => {
+                      return (
+                        <button
+                          style={{
+                            backgroundColor: item.value,
+                          }}
+                          className={`${classes.colorButtonGroup} ${
+                            selectedAttributes.find(
+                              (matchedAttribute) =>
+                                matchedAttribute.value === item.displayValue
+                            ) && classes.colorSelected
+                          }
+                       
+                      `}
+                          key={item.id}
+                        />
+                      );
+                    })}
+                  </div>
+                );
+              }
+              return (
+                <div key={attribute.id} className={classes.attributeGroup}>
+                  <p className={classes.attributeName}>{attribute.name}:</p>
+                  <div>
+                    {attribute.items.map((item) => (
+                      <button
+                        key={item.id}
+                        className={`${classes.attributeButton} ${
+                          selectedAttributes.find(
+                            (selectedAttribute) =>
+                              selectedAttribute.value === item.displayValue &&
+                              attribute.name === selectedAttribute.name
+                          )
+                            ? classes.selected
+                            : ""
+                        }`}
+                      >
+                        {item.displayValue}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
         </div>
 
         <div className={classes.rightColumn}>
@@ -41,8 +92,8 @@ class CartItem extends Component {
                 this.setState({ slide: classes.slideUp });
                 this.props.dispatch(
                   cartActions.addQuantity({
-                    id: this.props.id,
-                    attribute: this.props.attribute,
+                    id: id,
+                    selectedAttributes: selectedAttributes,
                   })
                 );
                 return setTimeout(() => this.setState({ slide: "" }), 500);
@@ -50,28 +101,24 @@ class CartItem extends Component {
             >
               +
             </button>
-            <div style={{ height: "30px", overflow: "hidden" }}>
-              <p
-                style={{ fontSize: "20px", position: "relative" }}
-                className={this.state.slide}
-              >
-                {this.props.quantity}
-              </p>
+            <div className={classes.quantity}>
+              <p className={this.state.slide}>{quantity}</p>
             </div>
             <button
               onClick={() => {
                 this.setState({ slide: classes.slideDown });
                 this.props.dispatch(
                   cartActions.subQuantity({
-                    id: this.props.id,
-                    attribute: this.props.attribute,
+                    id: id,
+                    selectedAttributes: selectedAttributes,
                   })
                 );
-                return setTimeout(() => this.setState({ slide: "" }), 500);
+                if (quantity > 1) {
+                  return setTimeout(() => this.setState({ slide: "" }), 500);
+                }
               }}
             >
-              {" "}
-              {this.props.quantity > 1 ? (
+              {quantity > 1 ? (
                 "-"
               ) : (
                 <FontAwesomeIcon
@@ -84,15 +131,15 @@ class CartItem extends Component {
           </div>
 
           <div className={classes.slideshowContainer}>
-            <ImageGallery images={this.props.images} haveLink={0} />
+            <ImageGallery images={gallery} haveLink={0} hover={1} />
           </div>
           <div className={classes.deleteButton}>
             <button
               onClick={() =>
                 this.props.dispatch(
                   cartActions.removeProduct({
-                    id: this.props.id,
-                    attribute: this.props.attribute,
+                    id: id,
+                    selectedAttributes: selectedAttributes,
                   })
                 )
               }

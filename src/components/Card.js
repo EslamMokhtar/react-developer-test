@@ -3,23 +3,168 @@ import { Link } from "react-router-dom";
 import classes from "./Card.module.css";
 import ImageGallery from "../shared/ImageGallery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCartPlus,
+  faChevronCircleDown,
+} from "@fortawesome/free-solid-svg-icons";
 import { cartActions } from "../store/cart-slice";
 import { connect } from "react-redux";
 
 class Card extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.handleMouseOver = this.handleMouseOver.bind(this);
+    this.handleMouseOut = this.handleMouseOut.bind(this);
     this.state = {
-      attribute: null,
+      isHovering: false,
       showError: false,
+      attributes: [],
+      clicked: 0,
+      showAttributes: false,
     };
+  }
+  handleMouseOver() {
+    this.setState(() => ({
+      isHovering: true,
+    }));
+  }
+
+  handleMouseOut() {
+    this.setState(() => ({
+      showAttributes: false,
+      isHovering: false,
+      clicked: 0,
+    }));
+  }
+  addProductHandler(attributes) {
+    if (
+      this.state.clicked === 0 &&
+      this.state.attributes.length !== attributes.length
+    ) {
+      this.setState({ showAttributes: true });
+      return this.setState({ clicked: 1 });
+    }
+    if (this.state.attributes.length !== attributes.length) {
+      this.setState({ showError: true });
+      return setTimeout(() => this.setState({ showError: false }), 1000);
+    }
+    this.setState({ attributes: [] });
+    return this.props.dispatch(
+      cartActions.addProduct({
+        ...this.props.product,
+        quantity: 1,
+        selectedAttributes: this.state.attributes,
+      })
+    );
+  }
+  manageAttributes(attribute, item) {
+    this.setState((pre) => {
+      const findAttribute = pre.attributes.find(
+        (matchedAttribute) => matchedAttribute.name === attribute.name
+      );
+      const findAttributeIndex = pre.attributes.findIndex(
+        (matchedAttribute) => matchedAttribute.name === attribute.name
+      );
+      let newArray;
+      if (findAttribute) {
+        newArray = [...pre.attributes];
+        newArray[findAttributeIndex].value = item.displayValue;
+      }
+      return {
+        attributes: findAttribute
+          ? newArray
+          : [
+              ...pre.attributes,
+              {
+                name: attribute.name,
+                value: item.displayValue,
+              },
+            ],
+      };
+    });
+  }
+  attributesButtons(attributes, inStock) {
+    return (
+      attributes.length > 0 &&
+      inStock &&
+      attributes.map((attribute) => {
+        if (attribute.type === "swatch") {
+          const error =
+            !this.state.attributes.find(
+              (matchedAttribute) => matchedAttribute.name === attribute.name
+            ) && this.state.showError;
+          return (
+            <div key={attribute.id} className={classes.attributeUnit}>
+              <h4 className={classes.attributeName}>{attribute.name}:</h4>
+              <div className={error ? classes.error : ""}>
+                {attribute.items.map((item) => {
+                  return (
+                    <button
+                      style={{
+                        backgroundColor: error ? "red" : item.value,
+                      }}
+                      className={`${classes.colorButtonGroup} ${
+                        this.state.attributes.find(
+                          (matchedAttribute) =>
+                            matchedAttribute.value === item.displayValue &&
+                            matchedAttribute.name === attribute.name
+                        ) && classes.colorSelected
+                      }
+               
+              `}
+                      onClick={() => this.manageAttributes(attribute, item)}
+                      key={item.id}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          );
+        }
+        const error =
+          !this.state.attributes.find(
+            (matchedAttribute) => matchedAttribute.name === attribute.name
+          ) && this.state.showError;
+        return (
+          <div key={attribute.id} className={classes.attributeUnit}>
+            <h4 className={classes.attributeName}>{attribute.name}:</h4>
+            <div className={error ? classes.error : ""}>
+              {attribute.items.map((item) => {
+                return (
+                  <button
+                    className={`${classes.buttonGroup} ${
+                      this.state.attributes.find(
+                        (matchedAttribute) =>
+                          matchedAttribute.value === item.displayValue &&
+                          matchedAttribute.name === attribute.name
+                      ) && classes.selected
+                    }
+               
+              `}
+                    onClick={() => this.manageAttributes(attribute, item)}
+                    key={item.id}
+                  >
+                    {item.displayValue}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })
+    );
   }
   render() {
     const { attributes, id, gallery, inStock, name } = this.props.product;
     return (
       <div className={classes.column}>
-        <div className={`${classes.card} ${!inStock && classes.outOfStock}`}>
+        <div
+          className={`${classes.card} ${!inStock && classes.outOfStock} ${
+            this.state.showAttributes && classes.expandCard
+          }`}
+          onMouseEnter={this.handleMouseOver}
+          onMouseLeave={this.handleMouseOut}
+        >
           <div className={classes.content}>
             <div className={classes.profile}>
               {!inStock ? (
@@ -30,6 +175,7 @@ class Card extends Component {
               ) : (
                 <>
                   <ImageGallery
+                    hover={this.state.isHovering}
                     images={gallery}
                     haveLink={1}
                     id={id}
@@ -38,88 +184,31 @@ class Card extends Component {
                   <button
                     className={classes.addButton}
                     data-testid={id}
-                    onClick={() => {
-                      if (!this.state.attribute && attributes.length > 0) {
-                        this.setState({ showError: true });
-                        return setTimeout(
-                          () => this.setState({ showError: false }),
-                          1000
-                        );
-                      }
-                      this.props.dispatch(
-                        cartActions.addProduct({
-                          ...this.props.product,
-                          quantity: 1,
-                          attribute: this.state.attribute,
-                          attributeName:
-                            attributes.length > 0 ? attributes[0].name : null,
-                        })
-                      );
-
-                      return this.setState({ attribute: null });
-                    }}
+                    onClick={this.addProductHandler.bind(this, attributes)}
                   >
-                    <FontAwesomeIcon icon={faCartPlus} size="lg" />
+                    {attributes.length > 0 && this.state.clicked === 0 ? (
+                      <FontAwesomeIcon icon={faChevronCircleDown} size="lg" />
+                    ) : (
+                      <FontAwesomeIcon icon={faCartPlus} size="lg" />
+                    )}
                   </button>
                 </>
               )}
             </div>
 
-            <h2
-              style={{
-                textAlign: "left",
-                marginLeft: "20px",
-                marginTop: "20px",
-                width: "75%",
-                fontWeight: "lighter",
-              }}
-            >
-              {name}
-            </h2>
-            <h4
-              style={{
-                textAlign: "left",
-                marginLeft: "20px",
-                fontWeight: "bold",
-                marginTop: "10px",
-              }}
-            >
+            <h2 className={classes.productName}>{name}</h2>
+            <h4 className={classes.productPrice}>
               {this.props.symbol}
               {this.props.price}
             </h4>
-
-            {attributes.length > 0 &&
-              attributes[0].items.map((item) => {
-                if (attributes[0].type === "swatch") {
-                  return (
-                    <span
-                      className={classes.colorDots}
-                      key={item.id}
-                      style={{ backgroundColor: item.value }}
-                    />
-                  );
-                }
-                return (
-                  <button
-                    className={`${classes.buttonGroup} ${
-                      this.state.attribute === item.displayValue &&
-                      classes.selected
-                    } ${this.state.showError && classes.error}
-                       
-                      `}
-                    onClick={() =>
-                      this.setState({
-                        showError: false,
-                        attribute: item.displayValue,
-                      })
-                    }
-                    key={item.id}
-                  >
-                    {item.displayValue}
-                  </button>
-                );
-              })}
           </div>
+            <div
+              className={`${classes.attributesButtons} ${
+                this.state.showAttributes ? classes.showAttributes : ""
+              }`}
+            >
+              {this.attributesButtons(attributes, inStock)}
+            </div>
         </div>
       </div>
     );

@@ -2,7 +2,7 @@
   float: left;
   width: 33.33%;
   display: flex;
-  height: 550px;
+  height: 520px;
   justify-content: space-around;
   padding: 40px;
 }
@@ -13,7 +13,9 @@
   border-radius: 10px;
   position: relative;
   padding: 20px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  
+  transition: all 0.4s;
   animation: 1s ease-out 0s 1 slideInFromLeft;
 }
 .card.outOfStock,
@@ -21,15 +23,7 @@
   opacity: 0.5;
   cursor: default;
 }
-.colorDots {
-  height: 25px;
-  width: 25px;
-  margin-top: 10px;
-  margin-right: 5px;
-  border-radius: 50%;
-  display: inline-block;
-  box-shadow: 2px 2px 5px grey;
-}
+
 .outOfStockText {
   position: absolute;
   font-weight: lighter;
@@ -52,8 +46,9 @@
   max-width: 300px;
 }
 .card:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transform: scale(1.1);
-  transition: 0.4s ease;
+  z-index: 1;
 }
 
 .card .content {
@@ -75,6 +70,7 @@
   cursor: pointer;
   transition: all 0.4s;
   border: 2px solid #5ece7b;
+  display: none;
 }
 
 .addButton:hover {
@@ -82,9 +78,80 @@
   color: #5ece7b;
   border: 2px solid #5ece7b;
 }
+.attributesButtons {
+  max-height: 0;
+  transition: max-height 3s;
+  visibility: hidden;
+}
+.attributeUnit {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.attributesButtons.showAttributes {
+  max-height: 1000px;
+  visibility: visible;
+}
+.card.expandCard {
+
+ height: fit-content;
+}
+
+.card:hover .addButton {
+  display: block;
+}
+
+.productName {
+  text-align: left;
+  font-size: 22px;
+  margin-left: 20px;
+  margin-top: 20px;
+  font-weight: lighter;
+}
+.productPrice {
+  font-size: 18px;
+  text-align: left;
+  margin-left: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.buttonGroup.error {
+  border-color: red;
+  background-color: red;
+  color: white;
+  animation: 1s ease-out 0s 1 shake;
+}
+.error button {
+  border-color: red;
+  background-color: red;
+  color: white;
+  animation: 1s ease-out 0s 1 shake;
+}
+.colorButtonGroup {
+  height: 30px;
+  width: 30px;
+  margin-top: 3px;
+  margin-right: 15px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px grey;
+}
+.colorButtonGroup:hover {
+  transform: scale(1.2);
+}
+
+.colorButtonGroup.colorSelected {
+  border-radius: 50%;
+}
+
 .buttonGroup {
   margin-right: 5px;
-  margin-top: 10px;
+  margin-bottom: 5px;
+  margin-top: 2px;
   transition: 0.4s ease;
   background-color: white;
   border-radius: 15px;
@@ -100,36 +167,11 @@
   background-color: black;
   color: white;
 }
-.buttonGroup.error {
-  border-color: red;
-  background-color: red;
-  color: white;
-  animation: 1s ease-out 0s 1 shake;
-}
 
-@media only screen and (max-width: 1100px) {
-  .column {
-    width: 50%;
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-  }
-}
-@media only screen and (max-width: 750px) {
-  .column {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-  }
-}
-@keyframes slideInFromLeft {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
+.attributeName {
+  text-transform: uppercase;
+  font-family: "Roboto Condensed";
+  font-size: 18px;
 }
 @keyframes shake {
   0% {
@@ -166,3 +208,29 @@
     transform: translate(1px);
   }
 }
+
+@media only screen and (max-width: 1100px) {
+  .column {
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+}
+@media only screen and (max-width: 750px) {
+  .column {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+}
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+

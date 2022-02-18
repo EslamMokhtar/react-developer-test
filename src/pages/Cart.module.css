@@ -4,7 +4,7 @@
 }
 .title {
   padding: 20px 0;
-  font-weight: lighter;
+
 }
 
 .cards {
@@ -51,9 +51,12 @@
 }
 .empty {
   height: 70vh;
-  display:grid;
+  display: grid;
   align-content: center;
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+.empty h1 {
+  font-weight: normal;
 }

@@ -4,42 +4,8 @@ import classes from "./Home.module.css";
 import Card from "../components/Card";
 import axios from "axios";
 import Loader from "../shared/Loader";
+import {GET_PRODUCTS} from '../utils/graphql/queries/productQueries'
 
-const GET_PRODUCTS = {
-  query: ` 
-  {
-    categories {
-      name
-      products {
-        id
-        name
-        gallery
-        inStock
-        brand
-        attributes{
-          name
-          type
-          id
-          items{
-            id
-            displayValue
-            value
-          }
-        }
-        prices {
-          currency {
-            label
-            symbol
-          }
-        
-          amount
-        }
-      }
-    }
-  }
-  
-  `,
-};
 
 class Items extends Component {
   constructor() {
