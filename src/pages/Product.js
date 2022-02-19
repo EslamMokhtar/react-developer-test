@@ -5,18 +5,23 @@ import classes from "./Product.module.css";
 import parse from "html-react-parser";
 import axios from "axios";
 import Loader from "../shared/Loader";
+import AttributesButtons from "../shared/AttributesButtons";
 import { GET_PRODUCT } from "../utils/graphql/queries/productQueries";
 
 class Product extends Component {
   constructor() {
     super();
     this.manageAttributes = this.manageAttributes.bind(this);
+    this.handleAttributes = this.handleAttributes.bind(this);
     this.state = {
       current: 0,
       product: null,
       attributes: [],
       showError: false,
     };
+  }
+  handleAttributes(attribute, item) {
+    this.manageAttributes(attribute, item);
   }
   addProductHandler() {
     if (this.state.attributes.length !== this.state.product.attributes.length) {
@@ -76,79 +81,7 @@ class Product extends Component {
       .catch((err) => console.log(err));
   }
 
-  attributesButtons() {
-    return (
-      this.state.product.attributes.length > 0 && (
-        <div>
-          {this.state.product.attributes.map((attribute) => {
-            if (attribute.type === "swatch") {
-              const error =
-                !this.state.attributes.find(
-                  (matchedAttribute) => matchedAttribute.name === attribute.name
-                ) && this.state.showError;
-              return (
-                <div key={attribute.id}>
-                  <h4 className={classes.attributeName}>{attribute.name}:</h4>
-                  <div className={error ? classes.error : ""}>
-                    {attribute.items.map((item) => {
-                      return (
-                        <button
-                          style={{
-                            backgroundColor: error ? "red" : item.value,
-                          }}
-                          className={`${classes.colorButtonGroup} ${
-                            this.state.attributes.find(
-                              (matchedAttribute) =>
-                                matchedAttribute.value === item.displayValue &&
-                                matchedAttribute.name === attribute.name
-                            ) && classes.colorSelected
-                          }
-                 
-                `}
-                          onClick={() => this.manageAttributes(attribute, item)}
-                          key={item.id}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            }
-            const error =
-              !this.state.attributes.find(
-                (matchedAttribute) => matchedAttribute.name === attribute.name
-              ) && this.state.showError;
-            return (
-              <div key={attribute.id}>
-                <h4 className={classes.attributeName}>{attribute.name}:</h4>
-                <div className={error ? classes.error : ""}>
-                  {attribute.items.map((item) => {
-                    return (
-                      <button
-                        className={`${classes.buttonGroup} ${
-                          this.state.attributes.find(
-                            (matchedAttribute) =>
-                              matchedAttribute.value === item.displayValue &&
-                              matchedAttribute.name === attribute.name
-                          ) && classes.selected
-                        }
-                 
-                `}
-                        onClick={() => this.manageAttributes(attribute, item)}
-                        key={item.id}
-                      >
-                        {item.displayValue}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )
-    );
-  }
+
   render() {
     if (!this.state.product) {
       return <Loader />;
@@ -195,7 +128,13 @@ class Product extends Component {
             <h1>{this.state.product.brand}</h1>
             <h1 style={{ fontWeight: "lighter" }}>{this.state.product.name}</h1>
           </div>
-          {this.attributesButtons()}
+          <AttributesButtons
+            attributes={this.state.product.attributes}
+            showError={this.state.showError}
+            inStock={1}
+            selectedAttributes={this.state.attributes}
+            manageAttributes={this.handleAttributes}
+          />
           <div>
             <h4>PRICE:</h4>
             <h3>

@@ -55,10 +55,6 @@
   text-transform: uppercase;
   transition: all 0.3s;
 }
-.attributeButton.selected {
-  color: white;
-  background-color: black;
-}
 
 .colorButtonGroup {
   height: 20px;
@@ -70,9 +66,15 @@
   border-radius: 5px;
   box-shadow: 2px 2px 5px grey;
 }
+.attributeButton.selected {
+  color: white;
+  background-color: black;
+}
+
 .colorButtonGroup.colorSelected {
   border-radius: 50%;
 }
+
 .addButtons {
   display: flex;
   width: 30%;

@@ -5,6 +5,7 @@ import { cartActions } from "../store/cart-slice";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ImageGallery from "../shared/ImageGallery";
+import SelectedAttributes from "../shared/SelectedAttributes";
 
 class CartItem extends Component {
   constructor() {
@@ -32,57 +33,12 @@ class CartItem extends Component {
             {this.props.symbol}
             {this.props.price.toFixed(2)}
           </strong>
-          {selectedAttributes.length > 0 &&
-            attributes.map((attribute) => {
-              if (attribute.type === "swatch") {
-                return (
-                  <div key={attribute.id} className={classes.attributeGroup}>
-                    <p className={classes.attributeName}>{attribute.name}:</p>
-                    {attribute.items.map((item) => {
-                      return (
-                        <button
-                          style={{
-                            backgroundColor: item.value,
-                          }}
-                          className={`${classes.colorButtonGroup} ${
-                            selectedAttributes.find(
-                              (matchedAttribute) =>
-                                matchedAttribute.value === item.displayValue
-                            ) && classes.colorSelected
-                          }
-                       
-                      `}
-                          key={item.id}
-                        />
-                      );
-                    })}
-                  </div>
-                );
-              }
-              return (
-                <div key={attribute.id} className={classes.attributeGroup}>
-                  <p className={classes.attributeName}>{attribute.name}:</p>
-                  <div>
-                    {attribute.items.map((item) => (
-                      <button
-                        key={item.id}
-                        className={`${classes.attributeButton} ${
-                          selectedAttributes.find(
-                            (selectedAttribute) =>
-                              selectedAttribute.value === item.displayValue &&
-                              attribute.name === selectedAttribute.name
-                          )
-                            ? classes.selected
-                            : ""
-                        }`}
-                      >
-                        {item.displayValue}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+          <SelectedAttributes
+            attributes={attributes}
+            selectedAttributes={selectedAttributes}
+            classes={classes}
+            showText={true}
+          />
         </div>
 
         <div className={classes.rightColumn}>

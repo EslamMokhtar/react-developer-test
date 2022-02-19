@@ -20,10 +20,6 @@
   text-transform: uppercase;
   transition: all 0.3s;
 }
-.attributeButton.selected {
-  color: white;
-  background-color: black;
-}
 
 .colorButtonGroup {
   height: 30px;
@@ -34,8 +30,12 @@
   border-radius: 5px;
   box-shadow: 2px 2px 5px grey;
 }
+.attributeButton.selected {
+  color: white;
+  background-color: black;
+}
+
 .colorButtonGroup.colorSelected {
-  transform: scale(1.2);
   border-radius: 50%;
 }
 .fade {
@@ -154,6 +154,7 @@
   text-transform: uppercase;
   font-family: "Roboto Condensed";
   font-size: 18px;
+  font-weight: bold;
 }
 @media only screen and (max-width: 700px) {
   .leftColumn {

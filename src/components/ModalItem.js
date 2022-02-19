@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import classes from "./ModalItem.module.css";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import SelectedAttributes from "../shared/SelectedAttributes";
 
 class ModalItem extends Component {
   constructor() {
@@ -33,53 +34,12 @@ class ModalItem extends Component {
             <strong>
               {this.props.symbol} {this.props.price.toFixed(2)}
             </strong>
-            {selectedAttributes.length > 0 &&
-              attributes.map((attribute) => {
-                if (attribute.type === "swatch") {
-                  return (
-                    <div key={attribute.id}>
-                      {attribute.items.map((item) => {
-                        return (
-                          <button
-                            style={{
-                              backgroundColor: item.value,
-                            }}
-                            className={`${classes.colorButtonGroup} ${
-                              selectedAttributes.find(
-                                (matchedAttribute) =>
-                                  matchedAttribute.value === item.displayValue
-                              ) && classes.colorSelected
-                            }
-                       
-                      `}
-                            key={item.id}
-                          />
-                        );
-                      })}
-                    </div>
-                  );
-                }
-                return (
-                  <div key={attribute.id}>
-                    {attribute.items.map((item) => (
-                      <button
-                        key={item.id}
-                        className={`${classes.attributeButton} ${
-                          selectedAttributes.find(
-                            (selectedAttribute) =>
-                              selectedAttribute.value === item.displayValue &&
-                              attribute.name === selectedAttribute.name
-                          )
-                            ? classes.selected
-                            : ""
-                        }`}
-                      >
-                        {item.displayValue}
-                      </button>
-                    ))}
-                  </div>
-                );
-              })}
+            <SelectedAttributes
+              attributes={attributes}
+              selectedAttributes={selectedAttributes}
+              classes={classes}
+              showText={false}
+            />
           </div>
         </div>
         <div className={classes.column}>
