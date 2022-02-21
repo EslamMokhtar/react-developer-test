@@ -43,7 +43,6 @@ nav {
   color: #5ece7b;
   transition: 0.4s ease-out;
   border-bottom: 2px solid #5ece7b;
-
   padding-bottom: 20px;
 }
 .overlayDrop {
@@ -69,11 +68,11 @@ nav {
   align-items: center;
 }
 .dropdownContent {
-  animation: slideDown 1s;
+  animation: slideDown .3s;
   margin: 0;
   position: absolute;
   width: 140px;
-  height: 193px;
+  max-height: 193px;
   overflow: auto;
   right: 125px;
   top: 6%;
@@ -150,9 +149,21 @@ nav {
 }
 @keyframes slideDown {
   0% {
-    transform: translateY(-10%);
+    height: 40px;
+  }
+  20% {
+    height: 80px;
+  }
+  40% {
+    height: 120px;
+  }
+  60% {
+    height: 160px;
+  }
+  80% {
+    height: 180px;
   }
   100% {
-    transform: translateY(0%);
+    height: 193px;
   }
 }

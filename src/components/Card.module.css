@@ -2,9 +2,9 @@
   float: left;
   width: 33.33%;
   display: flex;
-  height: 520px;
+  height: 470px;
   justify-content: space-around;
-  padding: 40px;
+  padding: 20px;
 }
 
 .card {
@@ -70,6 +70,7 @@
   transition: all 0.4s;
   border: 2px solid #5ece7b;
   visibility: hidden;
+  overflow: hidden;
 }
 
 .addButton:hover {
@@ -79,10 +80,9 @@
 }
 .attributesButtons {
   max-height: 0;
-  transition: max-height 3s;
+  transition: max-height 1.5s;
   visibility: hidden;
 }
-
 
 .attributesButtons.showAttributes {
   max-height: 500px;
@@ -111,8 +111,37 @@
   font-weight: bold;
   margin-top: 10px;
 }
+.icon1 {
+  position: absolute;
+  transition: transform 1s;
+  transform: translate(-50%, -50%);
+}
 
-@media only screen and (max-width: 1265px) {
+.icon2 {
+  position: absolute;
+  transition: transform 1s;
+  transform: translate(-100%, -500%);
+}
+.icon3 {
+  position: absolute;
+  transition: transform 1s;
+  transform: translate(-100%, -500%);
+}
+
+.icon1.buttonClicked {
+  transform: translate(100%, 500%);
+}
+
+.icon2.buttonClicked {
+  transform: translate(-50%, -50%);
+}
+.icon2.buttonClicked.addedToCart {
+  transform: translate(-50%, 500%);
+}
+.icon3.addedToCart {
+  transform: translate(-50%, -50%);
+}
+@media only screen and (max-width: 1150px) {
   .column {
     width: 50%;
     display: flex;
@@ -120,7 +149,7 @@
     margin-bottom: 20px;
   }
 }
-@media only screen and (max-width: 845px) {
+@media only screen and (max-width: 765px) {
   .column {
     width: 100%;
     display: flex;

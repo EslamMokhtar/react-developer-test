@@ -47,6 +47,8 @@
 }
 
 .addButton button {
+  position: relative;
+  height: 65px;
   transition: 0.5s ease;
   background-color: #5ece7b;
   color: white;
@@ -58,6 +60,7 @@
   text-decoration: none;
   border: 2px solid #5ece7b;
   width: 200px;
+  overflow: hidden;
 }
 .addButton button:hover {
   background-color: white;
@@ -82,6 +85,20 @@
   font-family: Roboto;
 }
 
+.addButtonText {
+  transition: transform 1s;
+}
+.icon {
+  transition: transform 1s;
+  transform: translateY(-500%);
+}
+
+.addButtonText.addedToCart {
+  transform: translateY(500%);
+}
+.icon.addedToCart {
+  transform: translateY(-80%);
+}
 @-webkit-keyframes fade {
   from {
     opacity: 0.4;
@@ -144,7 +161,7 @@
   font-family: "Roboto Condensed";
   font-size: 18px;
 }
-h3 {
+.priceText h3 {
   font-size: 24px;
   margin-bottom: 5px;
 }

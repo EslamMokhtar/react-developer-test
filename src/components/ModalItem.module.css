@@ -99,7 +99,9 @@
 .quantity p {
  margin-right: 9px;
 }
-
+.priceText{
+  margin: 10px 0;
+}
 @keyframes slideUp {
   0% {
     transform: translateY(25px);

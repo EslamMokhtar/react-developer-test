@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCartPlus,
   faChevronCircleDown,
+  faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { cartActions } from "../store/cart-slice";
 import { connect } from "react-redux";
@@ -23,6 +24,7 @@ class Card extends Component {
       showError: false,
       clicked: false,
       showAttributes: false,
+      addedToCart: false,
     };
   }
   handleAttributes(attribute, item) {
@@ -41,6 +43,51 @@ class Card extends Component {
       clicked: false,
     }));
   }
+
+  switchIcons(attributes) {
+    return attributes.length > 0 ? (
+      <>
+        <FontAwesomeIcon
+          icon={faChevronCircleDown}
+          size="lg"
+          className={`${classes.icon1} ${
+            this.state.clicked && classes.buttonClicked
+          }`}
+        />
+        <FontAwesomeIcon
+          icon={faCartPlus}
+          size="lg"
+          className={`${classes.icon2} ${
+            this.state.clicked && classes.buttonClicked
+          } ${this.state.addedToCart && classes.addedToCart}`}
+        />
+        <FontAwesomeIcon
+          icon={faCheckCircle}
+          size="lg"
+          className={`${classes.icon3} ${
+            this.state.addedToCart && classes.addedToCart
+          }`}
+        />
+      </>
+    ) : (
+      <>
+        <FontAwesomeIcon
+          icon={faCartPlus}
+          size="lg"
+          className={`${classes.icon2} ${classes.buttonClicked} ${
+            this.state.addedToCart && classes.addedToCart
+          }`}
+        />
+        <FontAwesomeIcon
+          icon={faCheckCircle}
+          size="lg"
+          className={`${classes.icon3} ${
+            this.state.addedToCart && classes.addedToCart
+          }`}
+        />
+      </>
+    );
+  }
   addProductHandler(attributes) {
     if (
       !this.state.clicked &&
@@ -52,14 +99,15 @@ class Card extends Component {
       this.setState({ showError: true });
       return setTimeout(() => this.setState({ showError: false }), 1000);
     }
-    this.setState({ attributes: [] });
-    return this.props.dispatch(
+    this.setState({ attributes: [], addedToCart: true });
+    this.props.dispatch(
       cartActions.addProduct({
         ...this.props.product,
         quantity: 1,
         selectedAttributes: this.state.attributes,
       })
     );
+    return setTimeout(() => this.setState({ addedToCart: false }), 1000);
   }
   manageAttributes(attribute, item) {
     this.setState((pre) => {
@@ -120,11 +168,7 @@ class Card extends Component {
                     data-testid={id}
                     onClick={this.addProductHandler.bind(this, attributes)}
                   >
-                    {attributes.length > 0 && !this.state.clicked ? (
-                      <FontAwesomeIcon icon={faChevronCircleDown} size="lg" />
-                    ) : (
-                      <FontAwesomeIcon icon={faCartPlus} size="lg" />
-                    )}
+                    {this.switchIcons(attributes)}
                   </button>
                 </>
               )}
@@ -141,7 +185,6 @@ class Card extends Component {
               this.state.showAttributes ? classes.showAttributes : ""
             }`}
           >
-            {/* {this.attributesButtons(attributes, inStock)} */}
             <AttributesButtons
               attributes={attributes}
               showError={this.state.showError}

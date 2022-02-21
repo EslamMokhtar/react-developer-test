@@ -6,6 +6,8 @@ import parse from "html-react-parser";
 import axios from "axios";
 import Loader from "../shared/Loader";
 import AttributesButtons from "../shared/AttributesButtons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { GET_PRODUCT } from "../utils/graphql/queries/productQueries";
 
 class Product extends Component {
@@ -18,6 +20,7 @@ class Product extends Component {
       product: null,
       attributes: [],
       showError: false,
+      addedToCart: false,
     };
   }
   handleAttributes(attribute, item) {
@@ -29,14 +32,15 @@ class Product extends Component {
       return setTimeout(() => this.setState({ showError: false }), 1000);
     }
 
-    this.setState({ attributes: [] });
-    return this.props.dispatch(
+    this.setState({ attributes: [], addedToCart: true });
+    this.props.dispatch(
       cartActions.addProduct({
         ...this.state.product,
         quantity: 1,
         selectedAttributes: this.state.attributes,
       })
     );
+    return setTimeout(() => this.setState({ addedToCart: false }), 1000);
   }
   manageAttributes(attribute, item) {
     this.setState((pre) => {
@@ -80,7 +84,6 @@ class Product extends Component {
       })
       .catch((err) => console.log(err));
   }
-
 
   render() {
     if (!this.state.product) {
@@ -135,7 +138,7 @@ class Product extends Component {
             selectedAttributes={this.state.attributes}
             manageAttributes={this.handleAttributes}
           />
-          <div>
+          <div className={classes.priceText}>
             <h4>PRICE:</h4>
             <h3>
               {matchCurrency.currency.symbol}
@@ -145,7 +148,22 @@ class Product extends Component {
           <div className={classes.addButton}>
             {this.state.product.inStock ? (
               <button onClick={this.addProductHandler.bind(this)}>
-                Add To Cart
+                <>
+                  <p
+                    className={`${classes.addButtonText} ${
+                      this.state.addedToCart && classes.addedToCart
+                    }`}
+                  >
+                    Add To Cart
+                  </p>
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    size="lg"
+                    className={`${classes.icon} ${
+                      this.state.addedToCart && classes.addedToCart
+                    }`}
+                  />
+                </>
               </button>
             ) : (
               <h2>Out Of Stock</h2>

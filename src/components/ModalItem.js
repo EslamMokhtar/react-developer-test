@@ -11,7 +11,29 @@ class ModalItem extends Component {
     super();
     this.state = { slide: "" };
   }
+  handleAddQuantity(id, selectedAttributes) {
+    this.setState({ slide: classes.slideUp });
+    this.props.dispatch(
+      cartActions.addQuantity({
+        id: id,
+        selectedAttributes: selectedAttributes,
+      })
+    );
+    return setTimeout(() => this.setState({ slide: "" }), 500);
+  }
 
+  handleSubQuantity(id, selectedAttributes, quantity) {
+    this.setState({ slide: classes.slideDown });
+    this.props.dispatch(
+      cartActions.subQuantity({
+        id: id,
+        selectedAttributes: selectedAttributes,
+      })
+    );
+    if (quantity > 1) {
+      return setTimeout(() => this.setState({ slide: "" }), 500);
+    }
+  }
   render() {
     const {
       id,
@@ -31,7 +53,7 @@ class ModalItem extends Component {
               <p>{name}</p>
             </div>
 
-            <strong>
+            <strong className={classes.priceText}>
               {this.props.symbol} {this.props.price.toFixed(2)}
             </strong>
             <SelectedAttributes
@@ -45,16 +67,11 @@ class ModalItem extends Component {
         <div className={classes.column}>
           <div className={classes.addButtons}>
             <button
-              onClick={() => {
-                this.setState({ slide: classes.slideUp });
-                this.props.dispatch(
-                  cartActions.addQuantity({
-                    id: id,
-                    selectedAttributes: selectedAttributes,
-                  })
-                );
-                return setTimeout(() => this.setState({ slide: "" }), 500);
-              }}
+              onClick={this.handleAddQuantity.bind(
+                this,
+                id,
+                selectedAttributes
+              )}
             >
               +
             </button>
@@ -62,18 +79,12 @@ class ModalItem extends Component {
               <p className={this.state.slide}>{quantity}</p>
             </div>
             <button
-              onClick={() => {
-                this.setState({ slide: classes.slideDown });
-                this.props.dispatch(
-                  cartActions.subQuantity({
-                    id: id,
-                    selectedAttributes: selectedAttributes,
-                  })
-                );
-                if (quantity > 1) {
-                  return setTimeout(() => this.setState({ slide: "" }), 500);
-                }
-              }}
+              onClick={this.handleSubQuantity.bind(
+                this,
+                id,
+                selectedAttributes,
+                quantity
+              )}
             >
               {quantity > 1 ? (
                 "-"
