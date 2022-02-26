@@ -99,6 +99,9 @@
 .icon.addedToCart {
   transform: translateY(-80%);
 }
+.productNameText {
+  font-weight: lighter;
+}
 @-webkit-keyframes fade {
   from {
     opacity: 0.4;

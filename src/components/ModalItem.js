@@ -34,6 +34,13 @@ class ModalItem extends Component {
       return setTimeout(() => this.setState({ slide: "" }), 500);
     }
   }
+  handleRemoveIcon(quantity) {
+    return quantity > 1 ? (
+      "-"
+    ) : (
+      <FontAwesomeIcon icon={faTrash} size="sm" className={classes.icon} />
+    );
+  }
   render() {
     const {
       id,
@@ -86,15 +93,7 @@ class ModalItem extends Component {
                 quantity
               )}
             >
-              {quantity > 1 ? (
-                "-"
-              ) : (
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  size="sm"
-                  className={classes.icon}
-                />
-              )}
+              {this.handleRemoveIcon(quantity)}
             </button>
           </div>
 

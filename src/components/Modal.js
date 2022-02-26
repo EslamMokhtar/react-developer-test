@@ -5,13 +5,16 @@ import classes from "./Modal.module.css";
 import ModalItem from "./ModalItem";
 
 class Modal extends Component {
+  handleModalClick() {
+    this.props.onClickModal();
+  }
   render() {
     if (this.props.items.length === 0) {
       return (
         <div id="myModal" className={classes.modal}>
           <div
             className={classes.overlay}
-            onClick={() => this.props.onClickModal()}
+            onClick={this.handleModalClick.bind(this)}
           />
           <div className={classes.modalContent}>
             <div className={classes.empty}>
@@ -44,10 +47,10 @@ class Modal extends Component {
       <div id="myModal" className={classes.modal}>
         <div
           className={classes.overlay}
-          onClick={() => this.props.onClickModal()}
+          onClick={this.handleModalClick.bind(this)}
         />
         <div className={classes.modalContent}>
-          <p style={{ paddingBottom: "20px" }}>
+          <p className={classes.myBagText}>
             <strong>My Bag, </strong>
             {totalQuantity} {totalQuantity < 2 ? "item" : "items"}
           </p>
@@ -56,7 +59,6 @@ class Modal extends Component {
               const matchCurrency = item.prices.find(
                 (price) => price.currency.label === this.props.currency.label
               );
-
               return (
                 <ModalItem
                   key={index}
@@ -78,7 +80,7 @@ class Modal extends Component {
             <Link to="/cart">
               <button
                 className={classes.bagButton}
-                onClick={() => this.props.onClickModal()}
+                onClick={this.handleModalClick.bind(this)}
               >
                 View Bag
               </button>

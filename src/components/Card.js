@@ -136,6 +136,31 @@ class Card extends Component {
     });
   }
 
+  inStockCheck(inStock, gallery, name, id, attributes) {
+    return !inStock ? (
+      <Link to={`/${this.props.category}/products/${id}`}>
+        <h2 className={classes.outOfStockText}>Out Of Stock</h2>
+        <img src={gallery[0]} alt={name} />
+      </Link>
+    ) : (
+      <>
+        <ImageGallery
+          hover={this.state.isHovering}
+          images={gallery}
+          haveLink={1}
+          id={id}
+          category={this.props.category}
+        />
+        <button
+          className={classes.addButton}
+          data-testid={id}
+          onClick={this.addProductHandler.bind(this, attributes)}
+        >
+          {this.switchIcons(attributes)}
+        </button>
+      </>
+    );
+  }
   render() {
     const { attributes, id, gallery, inStock, name } = this.props.product;
     return (
@@ -149,29 +174,7 @@ class Card extends Component {
         >
           <div className={classes.content}>
             <div className={classes.profile}>
-              {!inStock ? (
-                <Link to={`/${this.props.category}/products/${id}`}>
-                  <h2 className={classes.outOfStockText}>Out Of Stock</h2>
-                  <img src={gallery[0]} alt={name} />
-                </Link>
-              ) : (
-                <>
-                  <ImageGallery
-                    hover={this.state.isHovering}
-                    images={gallery}
-                    haveLink={1}
-                    id={id}
-                    category={this.props.category}
-                  />
-                  <button
-                    className={classes.addButton}
-                    data-testid={id}
-                    onClick={this.addProductHandler.bind(this, attributes)}
-                  >
-                    {this.switchIcons(attributes)}
-                  </button>
-                </>
-              )}
+              {this.inStockCheck(inStock, gallery, name, id, attributes)}
             </div>
 
             <h2 className={classes.productName}>{name}</h2>

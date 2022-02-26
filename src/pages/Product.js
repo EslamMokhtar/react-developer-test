@@ -84,7 +84,46 @@ class Product extends Component {
       })
       .catch((err) => console.log(err));
   }
-
+  inStockCheck() {
+    return this.state.product.inStock ? (
+      <button onClick={this.addProductHandler.bind(this)}>
+        <>
+          <p
+            className={`${classes.addButtonText} ${
+              this.state.addedToCart && classes.addedToCart
+            }`}
+          >
+            Add To Cart
+          </p>
+          <FontAwesomeIcon
+            icon={faCheckCircle}
+            size="lg"
+            className={`${classes.icon} ${
+              this.state.addedToCart && classes.addedToCart
+            }`}
+          />
+        </>
+      </button>
+    ) : (
+      <h2>Out Of Stock</h2>
+    );
+  }
+  galleryLengthCheck() {
+    return (
+      this.state.product.gallery.length > 1 &&
+      this.state.product.gallery.map((image, index) => {
+        return (
+          <img
+            src={image}
+            alt={index}
+            className={index === this.state.current ? classes.selected : ""}
+            key={index}
+            onClick={() => this.setState({ current: index })}
+          />
+        );
+      })
+    );
+  }
   render() {
     if (!this.state.product) {
       return <Loader />;
@@ -95,22 +134,7 @@ class Product extends Component {
     return (
       <div className={classes.container}>
         <div className={classes.leftColumn}>
-          <div className={classes.imageGroup}>
-            {this.state.product.gallery.length > 1 &&
-              this.state.product.gallery.map((image, index) => {
-                return (
-                  <img
-                    src={image}
-                    alt={index}
-                    className={
-                      index === this.state.current ? classes.selected : ""
-                    }
-                    key={index}
-                    onClick={() => this.setState({ current: index })}
-                  />
-                );
-              })}
-          </div>
+          <div className={classes.imageGroup}>{this.galleryLengthCheck()}</div>
 
           <div className={classes.bigImage}>
             {this.state.product.gallery.map((image, index) => {
@@ -129,7 +153,9 @@ class Product extends Component {
         <div className={classes.rightColumn}>
           <div>
             <h1>{this.state.product.brand}</h1>
-            <h1 style={{ fontWeight: "lighter" }}>{this.state.product.name}</h1>
+            <h1 className={classes.productNameText}>
+              {this.state.product.name}
+            </h1>
           </div>
           <AttributesButtons
             attributes={this.state.product.attributes}
@@ -145,30 +171,7 @@ class Product extends Component {
               {matchCurrency.amount}
             </h3>
           </div>
-          <div className={classes.addButton}>
-            {this.state.product.inStock ? (
-              <button onClick={this.addProductHandler.bind(this)}>
-                <>
-                  <p
-                    className={`${classes.addButtonText} ${
-                      this.state.addedToCart && classes.addedToCart
-                    }`}
-                  >
-                    Add To Cart
-                  </p>
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    size="lg"
-                    className={`${classes.icon} ${
-                      this.state.addedToCart && classes.addedToCart
-                    }`}
-                  />
-                </>
-              </button>
-            ) : (
-              <h2>Out Of Stock</h2>
-            )}
-          </div>
+          <div className={classes.addButton}>{this.inStockCheck()}</div>
           <div className={classes.description}>
             {parse(this.state.product.description)}
           </div>

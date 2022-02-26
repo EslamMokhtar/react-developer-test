@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { currencyActions } from "../store/currency-slice";
 import { Link, NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { GET_CURRENCIES } from "../utils/graphql/queries/currencyQueries";
 import {
   faShoppingBag,
   faShoppingCart,
@@ -12,17 +13,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-const GET_CURRENCIES = {
-  query: ` 
-  {
-    currencies{
-      label
-      symbol
-    }
-  }
-  
-  `,
-};
 class MainNavbar extends Component {
   constructor(props) {
     super(props);
@@ -62,6 +52,58 @@ class MainNavbar extends Component {
       return setTimeout(() => this.setState({ animate: false }), 400);
     }
   }
+  modalHandler() {
+    this.setState({ dropdown: false });
+    this.props.onClickModal();
+  }
+  closeCurrencyHandler() {
+    this.setState({ dropdown: false });
+  }
+  linkItem(item, index) {
+    return (
+      <li key={index}>
+        <NavLink
+          to={`/${item}`}
+          className={(isActive) => (isActive ? classes.activeLink : "")}
+        >
+          {item}
+        </NavLink>
+      </li>
+    );
+  }
+  currencyItem(item, index) {
+    return (
+      <li
+        onClick={this.chooseCurrency.bind(this, item)}
+        key={index}
+        className={
+          this.props.currency.label === item.label
+            ? classes.selectedCurrency
+            : ""
+        }
+      >
+        <div className={classes.currencyDropdown}>
+          <h3>{item.symbol}</h3>
+          <h4>{item.label}</h4>
+        </div>
+      </li>
+    );
+  }
+  totalQuantity(totalQuantity) {
+    return (
+      totalQuantity > 0 && (
+        <span
+          data-testid="totalQuantity"
+          id="bagCounter"
+          className={`${classes.badge} ${
+            this.state.animate && classes.animate
+          }`}
+        >
+          {totalQuantity}
+        </span>
+      )
+    );
+  }
 
   render() {
     const total = this.props.items.map((item) => {
@@ -73,23 +115,9 @@ class MainNavbar extends Component {
       <header className={classes.header}>
         <nav>
           <ul className={classes.links}>
-            {["all", "clothes", "tech"].map((item, index) => {
-              return (
-                <li key={index}>
-                  <NavLink
-                    to={`/${item}`}
-                    activeStyle={{
-                      color: "#5ece7b",
-                      transition: "0.4s ease-out",
-                      borderBottom: "2px solid #5ece7b",
-                      paddingBottom: "20px",
-                    }}
-                  >
-                    {item}
-                  </NavLink>
-                </li>
-              );
-            })}
+            {["all", "clothes", "tech"].map((item, index) =>
+              this.linkItem(item, index)
+            )}
           </ul>
           <Link to="/">
             <FontAwesomeIcon
@@ -101,9 +129,7 @@ class MainNavbar extends Component {
           </Link>
           <div className={classes.navIcons}>
             <div onClick={this.toggleDropDown} className={classes.chevron}>
-              <h3>
-                {this.props.currency.symbol}
-              </h3>
+              <h3>{this.props.currency.symbol}</h3>
               <FontAwesomeIcon
                 icon={this.state.dropdown ? faChevronUp : faChevronDown}
                 size="xs"
@@ -116,55 +142,24 @@ class MainNavbar extends Component {
             >
               <div
                 className={classes.overlayDrop}
-                onClick={() => this.setState({ dropdown: false })}
+                onClick={this.closeCurrencyHandler.bind(this)}
               />
               <ul
                 className={`${classes.dropdownContent} ${
                   !this.state.dropdown && classes.close
                 }`}
               >
-                {this.state.currncies.map((item, index) => {
-                  return (
-                    <li
-                      onClick={this.chooseCurrency.bind(null, item)}
-                      key={index}
-                      className={
-                        this.props.currency.label === item.label
-                          ? classes.selectedCurrency
-                          : ""
-                      }
-                    >
-                      <div
-                     className={classes.currencyDropdown}
-                      >
-                        <h3>{item.symbol}</h3>
-                        <h4>{item.label}</h4>
-                      </div>
-                    </li>
-                  );
-                })}
+                {this.state.currncies.map((item, index) =>
+                  this.currencyItem(item, index)
+                )}
               </ul>
             </div>
             <div
               className={classes.shopping}
-              onClick={() => {
-                this.setState({ dropdown: false });
-                this.props.onClickModal();
-              }}
+              onClick={this.modalHandler.bind(this)}
             >
               <FontAwesomeIcon icon={faShoppingCart} />
-
-              {totalQuantity > 0 && (
-                <span
-                  data-testid="totalQuantity"
-                  id="bagCounter"
-                  className={`${classes.badge} ${
-                    this.state.animate && classes.animate
-                  }`}
-                >
-                  {totalQuantity}
-                </span>
-              )}
+              {this.totalQuantity(totalQuantity)}
             </div>
           </div>
         </nav>

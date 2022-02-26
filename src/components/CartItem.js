@@ -10,7 +10,6 @@ import SelectedAttributes from "../shared/SelectedAttributes";
 class CartItem extends Component {
   constructor() {
     super();
-
     this.state = { slide: "" };
   }
 
@@ -36,6 +35,21 @@ class CartItem extends Component {
     if (quantity > 1) {
       return setTimeout(() => this.setState({ slide: "" }), 500);
     }
+  }
+  handleRemove(id, selectedAttributes) {
+    this.props.dispatch(
+      cartActions.removeProduct({
+        id: id,
+        selectedAttributes: selectedAttributes,
+      })
+    );
+  }
+  handleRemoveIcon(quantity) {
+    return quantity > 1 ? (
+      "-"
+    ) : (
+      <FontAwesomeIcon icon={faTrash} size="sm" className={classes.icon} />
+    );
   }
   render() {
     const {
@@ -88,15 +102,7 @@ class CartItem extends Component {
                 quantity
               )}
             >
-              {quantity > 1 ? (
-                "-"
-              ) : (
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  size="sm"
-                  className={classes.icon}
-                />
-              )}
+              {this.handleRemoveIcon(quantity)}
             </button>
           </div>
 
@@ -105,14 +111,7 @@ class CartItem extends Component {
           </div>
           <div className={classes.deleteButton}>
             <button
-              onClick={() =>
-                this.props.dispatch(
-                  cartActions.removeProduct({
-                    id: id,
-                    selectedAttributes: selectedAttributes,
-                  })
-                )
-              }
+              onClick={this.handleRemove.bind(this, id, selectedAttributes)}
             >
               <FontAwesomeIcon
                 icon={faTrash}

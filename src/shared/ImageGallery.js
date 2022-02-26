@@ -5,8 +5,6 @@ import classes from "./ImageGallery.module.css";
 class ImageGallery extends Component {
   constructor() {
     super();
-    this.nextHandler = this.nextHandler.bind(this);
-    this.preHandler = this.preHandler.bind(this);
     this.state = {
       current: 0,
     };
@@ -28,35 +26,36 @@ class ImageGallery extends Component {
       return { current: pre.current - 1 };
     });
   }
+  image(item, index) {
+    return (
+      <div
+        className={`${classes.fade} ${
+          this.state.current === index ? " " : classes.mySlides
+        }`}
+        key={index}
+      >
+        {this.props.haveLink ? (
+          <Link to={`/${this.props.category}/products/${this.props.id}`}>
+            <img src={item} alt={this.props.id} />
+          </Link>
+        ) : (
+          <img src={item} alt={this.props.id} />
+        )}
+      </div>
+    );
+  }
   render() {
     return (
       <>
-        {this.props.images.map((item, index) => {
-          return (
-            <div
-              className={`${classes.fade} ${
-                this.state.current === index ? " " : classes.mySlides
-              }`}
-              key={index}
-            >
-              {this.props.haveLink ? (
-                <Link to={`/${this.props.category}/products/${this.props.id}`}>
-                  <img src={item} alt={this.props.id} />
-                </Link>
-              ) : (
-                <img src={item} alt={this.props.id} />
-              )}
-            </div>
-          );
-        })}
+        {this.props.images.map((item, index) => this.image(item, index))}
 
         {this.props.images.length > 1 && this.props.hover && (
           <div className={classes.buttons}>
-            <button className={classes.prev} onClick={this.preHandler}>
+            <button className={classes.prev} onClick={this.preHandler.bind(this)}>
               &#10094;
             </button>
 
-            <button className={classes.next} onClick={this.nextHandler}>
+            <button className={classes.next} onClick={this.nextHandler.bind(this)}>
               &#10095;
             </button>
           </div>
