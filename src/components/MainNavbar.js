@@ -64,7 +64,9 @@ class MainNavbar extends Component {
       <li key={index}>
         <NavLink
           to={`/${item}`}
-          className={(isActive) => (isActive ? classes.activeLink : "")}
+          className={(isActive) =>
+            isActive ? classes.activeLink : classes.linkItem
+          }
         >
           {item}
         </NavLink>

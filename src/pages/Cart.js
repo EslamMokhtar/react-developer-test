@@ -4,22 +4,22 @@ import classes from "./Cart.module.css";
 import CartItem from "../components/CartItem";
 
 class Cart extends Component {
-  render() {
-    if (this.props.items.length === 0) {
-      return (
-        <div className={classes.empty}>
-          <lottie-player
-            src="https://assets4.lottiefiles.com/packages/lf20_GlZGOi.json"
-            background="transparent"
-            speed="1"
-            style={{ width: "300px", height: "300px" }}
-            autoplay
-          />
-          <h1>Your cart is empty!</h1>
-        </div>
-      );
-    }
-    const items = [...this.props.items].reverse();
+  emptyCart() {
+    return (
+      <div className={classes.empty}>
+        <lottie-player
+          src="https://assets4.lottiefiles.com/packages/lf20_GlZGOi.json"
+          background="transparent"
+          speed="1"
+          style={{ width: "300px", height: "300px" }}
+          autoplay
+        />
+        <h1>Your cart is empty!</h1>
+      </div>
+    );
+  }
+
+  calculateTotal() {
     const total = this.props.items.map((item) => {
       const quantity = item.quantity;
       const foundedAmount = item.prices.find(
@@ -29,7 +29,14 @@ class Cart extends Component {
     });
     const reducerTotal = (pre, curr) => pre + curr;
     const totalAmount = total.reduce(reducerTotal, 0);
-
+    return totalAmount;
+  }
+  render() {
+    if (this.props.items.length === 0) {
+      return this.emptyCart();
+    }
+    const items = [...this.props.items].reverse();
+    const totalAmount = this.calculateTotal();
     return (
       <div className={classes.container}>
         <h1 className={classes.title}>CART</h1>

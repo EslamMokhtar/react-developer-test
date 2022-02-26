@@ -8,30 +8,29 @@ class Modal extends Component {
   handleModalClick() {
     this.props.onClickModal();
   }
-  render() {
-    if (this.props.items.length === 0) {
-      return (
-        <div id="myModal" className={classes.modal}>
-          <div
-            className={classes.overlay}
-            onClick={this.handleModalClick.bind(this)}
-          />
-          <div className={classes.modalContent}>
-            <div className={classes.empty}>
-              <lottie-player
-                src="https://assets4.lottiefiles.com/packages/lf20_GlZGOi.json"
-                background="transparent"
-                speed="1"
-                style={{ width: "300px", height: "300px" }}
-                autoplay
-              />
-              <h2>Your bag is empty!</h2>
-            </div>
+  emptyBag() {
+    return (
+      <div id="myModal" className={classes.modal}>
+        <div
+          className={classes.overlay}
+          onClick={this.handleModalClick.bind(this)}
+        />
+        <div className={classes.modalContent}>
+          <div className={classes.empty}>
+            <lottie-player
+              src="https://assets4.lottiefiles.com/packages/lf20_GlZGOi.json"
+              background="transparent"
+              speed="1"
+              style={{ width: "300px", height: "300px" }}
+              autoplay
+            />
+            <h2>Your bag is empty!</h2>
           </div>
         </div>
-      );
-    }
-    const items = [...this.props.items].reverse();
+      </div>
+    );
+  }
+  calculateTotal() {
     const total = this.props.items.map((item) => {
       const quantity = item.quantity;
       const foundedAmount = item.prices.find(
@@ -43,6 +42,15 @@ class Modal extends Component {
     const reducerQuantity = (pre, curr) => pre + curr.quantity;
     const totalAmount = total.reduce(reducerTotal, 0);
     const totalQuantity = total.reduce(reducerQuantity, 0);
+    return { totalAmount, totalQuantity };
+  }
+
+  render() {
+    if (this.props.items.length === 0) {
+      return this.emptyBag();
+    }
+    const items = [...this.props.items].reverse();
+    const { totalAmount, totalQuantity } = this.calculateTotal();
     return (
       <div id="myModal" className={classes.modal}>
         <div

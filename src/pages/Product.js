@@ -23,6 +23,21 @@ class Product extends Component {
       addedToCart: false,
     };
   }
+  componentDidMount() {
+    const pid = this.props.pid;
+    axios({
+      url: "http://localhost:4000/",
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      data: JSON.stringify(GET_PRODUCT(pid)),
+    })
+      .then((response) => {
+        this.setState({
+          product: response.data.data.product,
+        });
+      })
+      .catch((err) => console.log(err));
+  }
   handleAttributes(attribute, item) {
     this.manageAttributes(attribute, item);
   }
@@ -69,21 +84,6 @@ class Product extends Component {
     });
   }
 
-  componentDidMount() {
-    const pid = this.props.pid;
-    axios({
-      url: "http://localhost:4000/",
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      data: JSON.stringify(GET_PRODUCT(pid)),
-    })
-      .then((response) => {
-        this.setState({
-          product: response.data.data.product,
-        });
-      })
-      .catch((err) => console.log(err));
-  }
   inStockCheck() {
     return this.state.product.inStock ? (
       <button onClick={this.addProductHandler.bind(this)}>
