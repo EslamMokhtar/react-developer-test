@@ -36,7 +36,7 @@ class MainNavbar extends Component {
   }
   componentDidMount() {
     axios({
-      url: "http://localhost:4000/",
+      url: "http://localhost:4000",
       method: "POST",
       headers: { "content-type": "application/json" },
       data: JSON.stringify(GET_CURRENCIES),

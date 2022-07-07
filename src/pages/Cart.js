@@ -2,8 +2,24 @@ import { Component } from "react/cjs/react.production.min";
 import { connect } from "react-redux";
 import classes from "./Cart.module.css";
 import CartItem from "../components/CartItem";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 class Cart extends Component {
+  constructor(props) {
+    super(props);
+    this.toggleDropDown = this.toggleDropDown.bind(this);
+    this.state = {
+      dropdown: false,
+    };
+  }
+
+  toggleDropDown() {
+    console.log("clicked");
+    this.setState((curState) => {
+      return { dropdown: !curState.dropdown };
+    });
+  }
   emptyCart() {
     return (
       <div className={classes.empty}>
@@ -31,12 +47,48 @@ class Cart extends Component {
     const totalAmount = total.reduce(reducerTotal, 0);
     return totalAmount;
   }
+  renderTable(rows) {
+    return (
+      <table>
+        <tbody>
+          {rows.map((row, index) => {
+            return (
+              <tr key={index}>
+                <td>{row.firstCol}: </td>
+                <td className={classes.secCol}>{row.secCol}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
+  }
+
   render() {
     if (this.props.items.length === 0) {
       return this.emptyCart();
     }
+    const total = this.props.items.map((item) => {
+      return item.quantity;
+    });
+    const reducerQuantity = (pre, curr) => pre + curr;
+    const totalQuantity = total.reduce(reducerQuantity, 0);
     const items = [...this.props.items].reverse();
     const totalAmount = this.calculateTotal();
+    const rows = [
+      {
+        firstCol: "Tax 21%",
+        secCol: this.props.currency.symbol + (totalAmount * 0.21).toFixed(2),
+      },
+      {
+        firstCol: "Quantity",
+        secCol: totalQuantity,
+      },
+      {
+        firstCol: "Total",
+        secCol: this.props.currency.symbol + totalAmount.toFixed(2),
+      },
+    ];
     return (
       <div className={classes.container}>
         <h1 className={classes.title}>CART</h1>
@@ -57,16 +109,28 @@ class Cart extends Component {
           })}
         </div>
 
-        <div className={classes.footer}>
-          <div className={classes.total}>
-            <p>Total</p>
-            <p>
-              {this.props.currency.symbol}
-              {totalAmount.toFixed(2)}
-            </p>
+        <div
+          className={classes.footer}
+          onMouseLeave={() => this.setState({ dropdown: false })}
+        >
+          <div onClick={this.toggleDropDown} className={classes.chevron}>
+            <FontAwesomeIcon
+              icon={this.state.dropdown ? faChevronDown : faChevronUp}
+              size="lg"
+            />
           </div>
+
+          <div
+            onClick={this.toggleDropDown}
+            className={`${classes.total} ${
+              this.state.dropdown && classes.totalUp
+            }`}
+          >
+            {this.renderTable(rows)}
+          </div>
+
           <div className={classes.button}>
-            <button>Checkout</button>
+            <button>Order</button>
           </div>
         </div>
       </div>

@@ -20,9 +20,11 @@
 }
 
 .cartItem {
-  width: 100%;
-  height: 130px;
-  margin-bottom: 40px;
+  width: 98%;
+  height: 195px;
+  margin-bottom: 20px;
+  padding-top: 8px;
+  border-top: solid #e5e5e5 1.5px;
 }
 .addButtons button:hover {
   transition: 0.5s ease;
@@ -44,7 +46,7 @@
 }
 .attributeButton {
   width: auto;
-  margin-top: 5px;
+  margin-bottom: 5px;
   margin-right: 5px;
   padding: 2px;
   font-size: 11px;
@@ -57,14 +59,14 @@
 }
 
 .colorButtonGroup {
-  height: 20px;
-  width: 20px;
-  margin-top: 10px;
+  height: 17px;
+  width: 17px;
+
   margin-right: 5px;
   border: none;
   transition: all 0.3s;
   border-radius: 5px;
-  box-shadow: 2px 2px 5px grey;
+  box-shadow: 1px 2px 3px grey;
 }
 .attributeButton.selected {
   color: white;
@@ -92,15 +94,18 @@
   transition: 0.5s ease-in-out;
 }
 .quantity {
- 
   overflow: hidden;
 }
 
 .quantity p {
- margin-right: 9px;
+  margin-right: 9px;
 }
-.priceText{
+.priceText {
   margin: 10px 0;
+}
+.attributeName {
+  font-size: small;
+  font-weight: bold;
 }
 @keyframes slideUp {
   0% {

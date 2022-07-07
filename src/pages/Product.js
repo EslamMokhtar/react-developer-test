@@ -9,6 +9,7 @@ import AttributesButtons from "../shared/AttributesButtons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { GET_PRODUCT } from "../utils/graphql/queries/productQueries";
+import Error from "../shared/Error";
 
 class Product extends Component {
   constructor() {
@@ -21,12 +22,13 @@ class Product extends Component {
       attributes: [],
       showError: false,
       addedToCart: false,
+      loading: true,
     };
   }
   componentDidMount() {
     const pid = this.props.pid;
     axios({
-      url: "http://localhost:4000/",
+      url: "http://localhost:4000",
       method: "POST",
       headers: { "content-type": "application/json" },
       data: JSON.stringify(GET_PRODUCT(pid)),
@@ -34,6 +36,7 @@ class Product extends Component {
       .then((response) => {
         this.setState({
           product: response.data.data.product,
+          loading: false,
         });
       })
       .catch((err) => console.log(err));
@@ -125,8 +128,11 @@ class Product extends Component {
     );
   }
   render() {
-    if (!this.state.product) {
+    if (this.state.loading) {
       return <Loader />;
+    }
+    if (!this.state.product) {
+      return <Error message="Product not found !" />;
     }
     const matchCurrency = this.state.product.prices.find(
       (price) => price.currency.label === this.props.currency.label

@@ -67,7 +67,7 @@ class ModalItem extends Component {
               attributes={attributes}
               selectedAttributes={selectedAttributes}
               classes={classes}
-              showText={false}
+              showText={true}
             />
           </div>
         </div>
