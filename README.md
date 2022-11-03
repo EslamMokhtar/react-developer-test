@@ -1,4 +1,4 @@
-# Raect Developer Test
+# React Developer Test
 
 
 ## Available Scripts
